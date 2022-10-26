@@ -1,0 +1,8 @@
+.venv/
+.ipynb_checkpoints/
+src/
+tests/
+notebooks/
+data/
+poetry.lock
+
