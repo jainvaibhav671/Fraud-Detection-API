@@ -7,3 +7,5 @@ echo "\
   enableCORS = false\n\
   \n\
   " > ~/.streamlit/config.toml
+
+cd backend/
