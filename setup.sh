@@ -9,6 +9,4 @@ echo "\
   \n\
   " > ~/.streamlit/config.toml
 
-# streamlit run frontend/app.py &
-
-uvicorn app:app &
+gunicorn -w 3 -k uvicorn.workers.UvicornWorker slack:app
