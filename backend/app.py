@@ -12,7 +12,7 @@ app = FastAPI(
     debug=True
 )
 
-model = joblib.load('backend/credit_fraud.pkl');
+model = joblib.load('credit_fraud.pkl');
 
 @app.get("/", response_class=PlainTextResponse)
 async def running():
