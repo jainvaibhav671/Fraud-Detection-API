@@ -11,5 +11,5 @@ echo "\
 
 # streamlit run frontend/app.py &
 
-# cd backend/
-# uvicorn app:app &
+cd "backend/" || exit
+uvicorn app:app &
