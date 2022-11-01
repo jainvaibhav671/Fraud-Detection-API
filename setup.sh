@@ -1,6 +1,6 @@
 mkdir -p ~/.streamlit/
 
-# PORT=8000
+PORT=8000
 echo "\
   [server]\n\
   headless = true\n\
@@ -9,7 +9,7 @@ echo "\
   \n\
   " > ~/.streamlit/config.toml
 
-streamlit run frontend/app.py &
+# streamlit run frontend/app.py &
 
 # cd backend/
 # uvicorn app:app &
