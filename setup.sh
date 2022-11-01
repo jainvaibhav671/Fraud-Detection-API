@@ -9,4 +9,4 @@ echo "\
   \n\
   " > ~/.streamlit/config.toml
 
-gunicorn -w 3 -k uvicorn.workers.UvicornWorker slack:app
+gunicorn -w 3 -k uvicorn.workers.UvicornWorker app:app
