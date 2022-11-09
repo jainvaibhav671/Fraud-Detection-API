@@ -1,5 +1,5 @@
 from fastapi import FastAPI, File, Query, UploadFile, HTTPException, Form
-from fastapi.responses import FileResponse, PlainTextResponse
+from fastapi.responses import FileResponse, PlainTextResponse, HTMLResponse
 import uvicorn
 import joblib
 import numpy as np
@@ -14,14 +14,23 @@ app = FastAPI(
 
 model = joblib.load('backend/credit_fraud.pkl');
 
-@app.get("/", response_class=PlainTextResponse)
+@app.get("/", response_class=HTMLResponse)
 async def running():
-    note = """
-    Credit Card Fraud Detection API
-    Note: add "/docs" or "/redoc" to the URL to access the documentation
+    return """
+    <html>
+        <head>
+            <link rel="icon" type="image/x-icon" href="favicon.png">
+            <title> API </title>
+        </head>
+        <body>
+            <h2>Credit Card Fraud Detection API</h2>
+            <p>Note: add "/docs" or "/redoc" to the URL to access the documentation</p>
+            <p> OR </p>
+            <div><a href="/docs"> Docs </a></div>
+            <div><a href="/redoc"> Alternative Docs</a></div>
+        </body>
+    </html>
     """
-
-    return note;
 
 favicon_path = 'favicon.png'
 @app.get('/favicon.png', include_in_schema=False)
