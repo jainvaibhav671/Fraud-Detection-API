@@ -1,9 +1,10 @@
-from fastapi import FastAPI, File, Query, UploadFile, HTTPException, Form
-from fastapi.responses import FileResponse, PlainTextResponse, HTMLResponse
+from fastapi import FastAPI, File
+from fastapi.responses import FileResponse, HTMLResponse
 import uvicorn
 import joblib
 import numpy as np
 from pydantic import BaseModel
+import os
 
 app = FastAPI(
     title="Credit Card Fraud Detection API",
@@ -12,25 +13,14 @@ app = FastAPI(
     debug=True
 )
 
-model = joblib.load('backend/credit_fraud.pkl');
+model = joblib.load('objects/credit_fraud.pkl');
 
 @app.get("/", response_class=HTMLResponse)
 async def running():
-    return """
-    <html>
-        <head>
-            <link rel="icon" type="image/x-icon" href="favicon.png">
-            <title> API </title>
-        </head>
-        <body>
-            <h2>Credit Card Fraud Detection API</h2>
-            <p>Note: add "/docs" or "/redoc" to the URL to access the documentation</p>
-            <p> OR </p>
-            <div><a href="/docs"> Docs </a></div>
-            <div><a href="/redoc"> Alternative Docs</a></div>
-        </body>
-    </html>
-    """
+    home = open(os.path.join("frontend/index.html"), 'r');
+    html = home.read();
+    home.close()
+    return html
 
 favicon_path = 'favicon.png'
 @app.get('/favicon.png', include_in_schema=False)
@@ -45,10 +35,11 @@ class CreditData(BaseModel):
     newbalanceorig: float;
     oldbalancedest: float;
     newbalancedest: float;
-    isflaggedfraud: float;
+    isFlaggedFraud: int;
 
-@app.post('/predict')
+@app.post('/predict/')
 def predict(data: CreditData):
+    print(data)
     features = np.array( [[data.step,
                            data.types,
                            data.amount,
@@ -56,8 +47,9 @@ def predict(data: CreditData):
                            data.newbalanceorig,
                            data.oldbalancedest,
                            data.newbalancedest,
-                           data.isflaggedfraud]] );
-    model = joblib.load('credit_fraud.pkl');
+                           data.isFlaggedFraud
+                           ]] );
+    model = joblib.load('objects/credit_fraud.pkl');
     predictions = model.predict(features);
 
     if (predictions == 1):

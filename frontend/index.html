@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Credit Card Fraud Detection</title>
+    <!-- <link rel="stylesheet" href="frontend/style.css" /> -->
+
+    <style type="text/css" media="screen">
+      :root {
+        --color0: #c4fff9;
+        --color1: #9ceaef;
+        --color2: #68d8d6;
+        --color3: #3dccc7;
+        --color4: #07beb8;
+      }
+      body {
+        margin: 0px;
+      }
+
+      /* ------------------nav-START---------------------- */
+
+      nav {
+        display: flex;
+        justify-content: space-around;
+        background-color: var(--color4);
+        color: var(--color0);
+        font-weight: bold;
+        align-items: center;
+        font-size: 120%;
+      }
+      nav ul {
+        display: flex;
+        gap: 36px;
+      }
+
+      nav li {
+        list-style-type: none;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: inherit;
+        font-weight: inherit;
+      }
+
+      nav a:hover {
+        font-size: 108%;
+        text-decoration: underline;
+        text-decoration-color: var(--color4);
+      }
+
+      /* ------------------nav-END---------------------- */
+
+      /* ------------------MAIN-START---------------------- */
+
+      /* INTRO */
+
+      main {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #intro {
+        background-color: var(--color1);
+      }
+
+      #form {
+        display: grid;
+      }
+
+      .box {
+        display: flex;
+        justify-content: space-between;
+        gap: 32px;
+      }
+
+      /* ------------------MAIN-END---------------------- */
+    </style>
+  </head>
+  <body>
+    <nav>
+      <h4><a href="/">Credit Card Fraud Detection API</a></h4>
+      <ul>
+        <li><a href="/docs" target="_blank">Docs</a></li>
+        <li><a href="/redoc" target="_blank">Redocs</a></li>
+        <li>
+          <a
+            href="https://github.com/cse-vaibhav/Credit-Card-Fraud-Detection-API"
+            target="_blank"
+            >GitHub</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <form method="post" id="form">
+        <div class="row">
+          <div class="box">
+            <label for="">Amount: </label>
+            <input id="amount" type="number" min="1" step="any" />
+          </div>
+          <div class="box">
+            <label for="types">Type: </label>
+            <select id="types" name="types">
+              <option value="0">Payment</option>
+              <option value="1">CASH-IN</option>
+              <option value="2">CASH-OUT</option>
+              <option value="3">DEBIT</option>
+              <option value="4">TRANSFER</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="box">
+            <label for="">Sender's Old Balance: </label>
+            <input id="oldBalanceOrig" type="number" min="1" step="any" />
+          </div>
+          <div class="box">
+            <label for="">Sender's New Balance: </label>
+            <input id="newBalanceOrig" type="number" min="1" step="any" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="box">
+            <label for="">Receiver's Old Balance: </label>
+            <input id="oldBalanceDest" type="number" min="1" step="any" />
+          </div>
+          <div class="box">
+            <label for="">Receiver's New Balance: </label>
+            <input id="newBalanceDest" type="number" min="1" step="any" />
+          </div>
+          <div class="box">
+            <label for="">What do you think? </label>
+            <input id="isFlaggedFraud" type="text" step="any" />
+          </div>
+        </div>
+        <button>Submit</button>
+      </form>
+    </main>
+
+    <nav>
+      <h4><a href="/">Credit Card Fraud Detection API</a></h4>
+      <ul>
+        <li><a href="/docs" target="_blank">Docs</a></li>
+        <li><a href="/redoc" target="_blank">Redocs</a></li>
+        <li>
+          <a
+            href="https://github.com/cse-vaibhav/Credit-Card-Fraud-Detection-API"
+            target="_blank"
+            >GitHub</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </body>
+  <script charset="utf-8">
+    const button = document.querySelector("button");
+
+    button.addEventListener("click", async (_) => {
+      xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST", "/predict/", true);
+      xmlhttp.setRequestHeader("Content-type", "application/json");
+
+      xmlhttp.onreadystatechange = function () {
+        //Call a function when the state changes.
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          alert(xmlhttp.responseText);
+        }
+      };
+
+      let obj = {
+        step: 1,
+        types: parseInt(document.querySelector("select").value),
+        amount: parseInt(document.querySelector("#amount").value),
+        oldbalanceorig: parseInt(
+          document.querySelector("#oldBalanceOrig").value
+        ),
+        newbalanceorig: parseInt(
+          document.querySelector("#newBalanceOrig").value
+        ),
+        oldbalancedest: parseInt(
+          document.querySelector("#oldBalanceDest").value
+        ),
+        newbalancedest: parseInt(
+          document.querySelector("#newBalanceDest").value
+        ),
+        isFlaggedFraud: 0,
+      };
+
+      xmlhttp.send(obj);
+
+      // const response = await fetch("/predict/", {
+      //   method: "post",
+      //   headers: {
+      //     Accept: "application/json",
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: {
+      //     step: 1,
+      //     types: parseInt(document.querySelector("select").value),
+      //     amount: parseInt(document.querySelector("#amount").value),
+      //     oldbalanceorig: parseInt(
+      //       document.querySelector("#oldBalanceOrig").value
+      //     ),
+      //     newbalanceorig: parseInt(
+      //       document.querySelector("#newBalanceOrig").value
+      //     ),
+      //     oldbalancedest: parseInt(
+      //       document.querySelector("#oldBalanceDest").value
+      //     ),
+      //     newbalancedest: parseInt(
+      //       document.querySelector("#newBalanceDest").value
+      //     ),
+      //     isFlaggedFraud: 0,
+      //   },
+      // });
+    });
+  </script>
+</html>
